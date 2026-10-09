@@ -1,0 +1,43 @@
+{
+  "sample": true,
+  "note": "SAMPLE DATA for building the AtlasOps wing frontend. Account names and IDs come from the AtlasOps project context; every amount, finding and scan below is made up. Shaped like the AtlasOps Supabase tables so a live connection can replace this file later.",
+  "cloud_connections": [
+    { "id": "skywalk", "name": "Skywalk", "account_id": "011715207542" },
+    { "id": "nybble", "name": "Nybble", "account_id": "850995556152" }
+  ],
+  "cost_by_service": {
+    "period": "month to date",
+    "currency": "USD",
+    "skywalk": [
+      { "service": "EC2", "amount": 412.3 },
+      { "service": "RDS", "amount": 268.9 },
+      { "service": "S3", "amount": 61.2 },
+      { "service": "Lambda", "amount": 18.4 },
+      { "service": "Other", "amount": 74.6 }
+    ],
+    "nybble": [
+      { "service": "EC2", "amount": 205.1 },
+      { "service": "RDS", "amount": 139.7 },
+      { "service": "CloudFront", "amount": 42.8 },
+      { "service": "S3", "amount": 27.5 },
+      { "service": "Other", "amount": 33.0 }
+    ]
+  },
+  "aws_findings": [
+    { "connection": "skywalk", "region": "af-south-1", "category": "security", "severity": "high", "title": "Security group open to 0.0.0.0/0 on port 22", "monthly_cost": 0 },
+    { "connection": "skywalk", "region": "af-south-1", "category": "cost", "severity": "medium", "title": "Idle EC2 instance (CPU < 2% for 14 days)", "monthly_cost": 38.5 },
+    { "connection": "skywalk", "region": "eu-west-1", "category": "cost", "severity": "low", "title": "Unattached EBS volume", "monthly_cost": 8.0 },
+    { "connection": "nybble", "region": "af-south-1", "category": "security", "severity": "critical", "title": "S3 bucket with public read ACL", "monthly_cost": 0 },
+    { "connection": "nybble", "region": "af-south-1", "category": "cost", "severity": "medium", "title": "RDS instance over-provisioned", "monthly_cost": 54.2 },
+    { "connection": "nybble", "region": "us-east-1", "category": "security", "severity": "medium", "title": "IAM user without MFA", "monthly_cost": 0 },
+    { "connection": "nybble", "region": "af-south-1", "category": "cost", "severity": "low", "title": "Old manual RDS snapshots", "monthly_cost": 6.1 }
+  ],
+  "aws_scan_results": [
+    { "connection": "skywalk", "region": "af-south-1", "scanned_at": "2026-10-09T06:00:00Z", "resources": 142, "findings": 2, "status": "ok" },
+    { "connection": "skywalk", "region": "eu-west-1", "scanned_at": "2026-10-09T06:00:00Z", "resources": 37, "findings": 1, "status": "ok" },
+    { "connection": "skywalk", "region": "us-east-1", "scanned_at": "2026-10-08T06:00:00Z", "resources": 9, "findings": 0, "status": "stale" },
+    { "connection": "nybble", "region": "af-south-1", "scanned_at": "2026-10-09T06:05:00Z", "resources": 98, "findings": 3, "status": "ok" },
+    { "connection": "nybble", "region": "us-east-1", "scanned_at": "2026-10-09T06:05:00Z", "resources": 21, "findings": 1, "status": "ok" },
+    { "connection": "nybble", "region": "eu-west-1", "scanned_at": null, "resources": 0, "findings": 0, "status": "failed" }
+  ]
+}

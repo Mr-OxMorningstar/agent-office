@@ -1,0 +1,20 @@
+{
+  "snapshotAt": "2026-10-09",
+  "root": {
+    "title": "Knowledge Hub",
+    "url": "https://drive.google.com/drive/folders/18llXNcBQNAu9P2QMapsGSeqHSnfYI52p"
+  },
+  "items": [
+    { "title": "Index", "kind": "folder", "url": "https://drive.google.com/drive/folders/1EeDyZ-dXEz2iSjhdJB3ovh5AdkxYbgEK" },
+    { "title": "Procedural", "kind": "folder", "url": "https://drive.google.com/drive/folders/1n6ejslvutkTAI1MLAKGRDph2ssRVMKQs" },
+    { "title": "Semantic", "kind": "folder", "url": "https://drive.google.com/drive/folders/1MR6EOt2ACUqgWvWlQJKnfNNjNClxDawW" },
+    { "title": "Episodic", "kind": "folder", "url": "https://drive.google.com/drive/folders/1BFVWeF6VeJRCCrpLoJnCGbxoySLGADu9" },
+    { "title": "Projects", "kind": "folder", "url": "https://drive.google.com/drive/folders/1GUXJExop2q_mVhai6PvVjdGHQz91NowA" },
+    { "title": "Skills", "kind": "folder", "url": "https://drive.google.com/drive/folders/1pTju1UPiQuR7_WiPYHP96IZIJnuyXDkB" },
+    { "title": "Gaps", "kind": "folder", "url": "https://drive.google.com/drive/folders/1cvB7rTTZB6wKDMwhsYSMJco8bTrgMEbw" },
+    { "title": "Meta", "kind": "folder", "url": "https://drive.google.com/drive/folders/1zyw8XeJamEdD7jB1JYRoo4urUFm3wnO4" },
+    { "title": "Buffer", "kind": "folder", "url": "https://drive.google.com/drive/folders/1-naly28fkzlW48JOJHIyD4G9OfhA2gzn" },
+    { "title": "Archive", "kind": "folder", "url": "https://drive.google.com/drive/folders/1khjQuGpkLElrFvwCYZjCjAI3tEt6xQdX" },
+    { "title": "DOC-0018 — FlowSync GD Design Review & Implementation Roadmap", "kind": "doc", "url": "https://docs.google.com/document/d/13_oSm55HFPyWwZPJ_enVshA1glfqcQo_ruJM5UIbc38/edit" }
+  ]
+}

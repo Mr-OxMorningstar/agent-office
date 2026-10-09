@@ -1,0 +1,24 @@
+{
+  "source": "Backlog snapshot (read 2026-10-09)",
+  "nextId": "AUTO-019",
+  "items": [
+    { "id": "AUTO-001", "title": "Deprecated CI agent image detection", "surfaces": ["PIPELINE", "SCAN"], "priority": "HIGH", "freq": "recurring", "effort": "M" },
+    { "id": "AUTO-002", "title": "Dependency-ordered AWS account teardown", "surfaces": ["REMEDIATE", "REPORT"], "priority": "HIGH", "freq": "per project offboard", "effort": "L" },
+    { "id": "AUTO-003", "title": "Tag drift detection + bulk remediation", "surfaces": ["SCAN", "REMEDIATE"], "priority": "HIGH", "freq": "continuous", "effort": "M" },
+    { "id": "AUTO-004", "title": "One-click CUR + Athena onboarding", "surfaces": ["PROVISION"], "priority": "HIGH", "freq": "per new account", "effort": "M" },
+    { "id": "AUTO-005", "title": "Untagged spend attribution job", "surfaces": ["SCAN", "REPORT"], "priority": "MED", "freq": "daily", "effort": "S" },
+    { "id": "AUTO-006", "title": "Cross-account decommission discovery", "surfaces": ["SCAN", "REPORT"], "priority": "MED", "freq": "monthly", "effort": "M" },
+    { "id": "AUTO-007", "title": "Azure App Registration provisioning", "surfaces": ["PROVISION"], "priority": "MED", "freq": "per integration", "effort": "S" },
+    { "id": "AUTO-008", "title": "Multi-region Lambda deploy from CDK repo", "surfaces": ["PIPELINE"], "priority": "MED", "freq": "per region add", "effort": "S" },
+    { "id": "AUTO-009", "title": "Cost Explorer / Cost Optimization Hub opt-in automation", "surfaces": ["PROVISION"], "priority": "MED", "freq": "per account", "effort": "S" },
+    { "id": "AUTO-010", "title": "Secret / key exposure scanning", "surfaces": ["SCAN", "REPORT"], "priority": "CRITICAL", "freq": "continuous", "effort": "M", "note": "Open exposure — still unresolved per the backlog" },
+    { "id": "AUTO-011", "title": "RDS export/import via bastion", "surfaces": ["REMEDIATE"], "priority": "LOW", "freq": "occasional", "effort": "M" },
+    { "id": "AUTO-012", "title": "SonarQube quality-gate notification stack", "surfaces": ["PIPELINE", "REPORT"], "priority": "LOW", "freq": "continuous once built", "effort": "L" },
+    { "id": "AUTO-013", "title": "No-CE/Billing-access account audit (inventory + cost estimate)", "surfaces": ["SCAN", "REPORT"], "priority": "HIGH", "freq": "per account without CE/Billing access", "effort": "M" },
+    { "id": "AUTO-014", "title": "Undersized Aurora Serverless v2 cache detection", "surfaces": ["SCAN", "REPORT"], "priority": "MED", "freq": "continuous", "effort": "S" },
+    { "id": "AUTO-015", "title": "SSO permission-set drift / name-vs-actual-policy audit", "surfaces": ["SCAN", "REPORT"], "priority": "MED", "freq": "continuous", "effort": "M" },
+    { "id": "AUTO-016", "title": "Stuck CloudFormation DELETE_FAILED recovery", "surfaces": ["SCAN", "REPORT"], "priority": "LOW", "freq": "continuous", "effort": "S" },
+    { "id": "AUTO-017", "title": "RDS-managed network interface blocks manual EIP cleanup", "surfaces": ["SCAN", "REPORT"], "priority": "LOW", "freq": "continuous", "effort": "S" },
+    { "id": "AUTO-018", "title": "email-service Maven build needs --add-opens on JDK 16+", "surfaces": ["PIPELINE"], "priority": "MED", "freq": "every local build on JDK 16+", "effort": "S" }
+  ]
+}

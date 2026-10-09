@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Office</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <header class="hud">
+      <h1>The Office</h1>
+      <p id="agent-count">No agents on the floor</p>
+      <p id="feed-status" class="feed-status" data-status="connecting">Connecting to live feed…</p>
+    </header>
+    <nav id="view-switch" class="view-switch" aria-label="Camera view"><kbd>V</kbd></nav>
+    <div class="crosshair" aria-hidden="true"></div>
+    <button id="needs-you" class="needs-you" type="button" hidden>✋ <span></span> <strong>Review</strong></button>
+    <div id="prompt" class="prompt" hidden><kbd>E</kbd><span></span></div>
+    <footer class="hint">
+      <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk · <kbd>Shift</kbd> run · <kbd>E</kbd> interact · <kbd>V</kbd> view ·
+      <span class="hint-overview">drag to rotate · scroll to zoom</span>
+      <span class="hint-player">click to look with the mouse · <kbd>Esc</kbd> frees it</span>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

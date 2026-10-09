@@ -1,0 +1,16 @@
+node_modules
+dist
+
+.env*
+*.pem
+*.key
+*.bak*
+
+.claude/
+CLAUDE.md
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+npm-debug.log*
