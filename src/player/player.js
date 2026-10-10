@@ -40,6 +40,7 @@ export function createPlayer({ scene, camera, controls, layout, colliders }) {
   window.addEventListener('keyup', (e) => pressed.delete(e.code));
   window.addEventListener('blur', () => pressed.clear());
   const held = (action) => KEYS[action].some((k) => pressed.has(k));
+  const stick = { x: 0, y: 0, magnitude: 0, run: false }; // on-screen joystick (touch), same space as the keys
 
   const forward = new THREE.Vector3();
   const right = new THREE.Vector3();
@@ -48,6 +49,10 @@ export function createPlayer({ scene, camera, controls, layout, colliders }) {
 
   return {
     avatar,
+    // Joystick input from the touch controls: { x, y, magnitude, run } with x right and y forward; null releases it.
+    setAnalog(vector) {
+      Object.assign(stick, vector ?? { x: 0, y: 0, magnitude: 0, run: false });
+    },
     update(dt, elapsed) {
       // Camera-relative directions, flattened onto the floor.
       camera.getWorldDirection(forward);
@@ -61,10 +66,19 @@ export function createPlayer({ scene, camera, controls, layout, colliders }) {
       if (held('right')) move.add(right);
       if (held('left')) move.sub(right);
 
+      // The joystick only steers when no key is held; how far it is pushed scales the speed.
+      let analog = 1;
+      let running = held('run');
+      if (move.lengthSq() === 0 && stick.magnitude > 0) {
+        move.addScaledVector(forward, stick.y).addScaledVector(right, stick.x);
+        analog = stick.magnitude;
+        running = stick.run;
+      }
+
       const moving = move.lengthSq() > 0;
       avatar.moving = moving;
       if (moving) {
-        move.normalize().multiplyScalar((held('run') ? RUN_SPEED : WALK_SPEED) * dt);
+        move.normalize().multiplyScalar((running ? RUN_SPEED : WALK_SPEED) * analog * dt);
         before.copy(avatar.position);
         moveWithCollisions(avatar.position, move.x, move.z, RADIUS, colliders, layout.bounds);
         avatar.faceTowards(avatar.position.clone().add(move));

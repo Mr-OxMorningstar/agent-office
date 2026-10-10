@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { isTouchDevice } from '../ui/touch-device.js';
 
 export const VIEW_MODES = [
   { id: 'overview', label: 'Overview' },
@@ -7,6 +8,7 @@ export const VIEW_MODES = [
 ];
 
 const LOOK_SENSITIVITY = 0.0025; // radians per pixel of mouse movement
+const TOUCH_LOOK_SENSITIVITY = 0.005; // radians per pixel of finger drag
 const PITCH_LIMIT = Math.PI * 0.47;
 const EYE_HEIGHT = 1.6;
 const THIRD_PERSON = { headHeight: 1.45, distance: 4.5, minDistance: 1.8, maxDistance: 9 };
@@ -26,11 +28,12 @@ export function createViewModes({ camera, controls, domElement, player, onChange
   const forward = new THREE.Vector3();
   const euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
+  const touch = isTouchDevice();
   const isPlayerView = () => mode !== 'overview';
   const isLocked = () => document.pointerLockElement === domElement;
 
   domElement.addEventListener('click', () => {
-    if (isPlayerView() && !isLocked()) domElement.requestPointerLock();
+    if (isPlayerView() && !isLocked() && !touch) domElement.requestPointerLock(); // touch looks by dragging instead
   });
 
   document.addEventListener('mousemove', (e) => {
@@ -60,6 +63,17 @@ export function createViewModes({ camera, controls, domElement, player, onChange
       return mode;
     },
     isLocked,
+    // Touch look-around in the player views, by a finger drag in pixels.
+    look(dx, dy) {
+      if (!isPlayerView()) return;
+      yaw -= dx * TOUCH_LOOK_SENSITIVITY;
+      pitch = THREE.MathUtils.clamp(pitch - dy * TOUCH_LOOK_SENSITIVITY, -PITCH_LIMIT, PITCH_LIMIT);
+    },
+    // Pinch zoom in third person: positive pulls the camera back, in pixels of finger spread change.
+    zoom(delta) {
+      if (mode !== 'third') return;
+      distance = THREE.MathUtils.clamp(distance + delta * 0.02, THIRD_PERSON.minDistance, THIRD_PERSON.maxDistance);
+    },
     setMode(next) {
       if (next === mode) return;
       if (next === 'overview') {

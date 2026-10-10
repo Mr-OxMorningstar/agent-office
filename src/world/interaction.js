@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { isTap } from '../ui/touch-math.js';
 
 const CLICK_TOLERANCE_PX = 5; // pointer movement beyond this between down/up counts as an orbit drag, not a click
 
@@ -12,6 +13,7 @@ export function createInteraction(camera, domElement, { getPointer } = {}) {
   const targets = new Map(); // mesh -> { onHover, onClick }
   let hovered = null;
   let downAt = null;
+  const touches = new Set(); // fingers currently down; a second finger turns the gesture into a look/pinch, not a tap
 
   const hitAt = (event) => {
     const override = getPointer ? getPointer(event) : undefined;
@@ -42,15 +44,30 @@ export function createInteraction(camera, domElement, { getPointer } = {}) {
   });
 
   domElement.addEventListener('pointerdown', (event) => {
-    downAt = { x: event.clientX, y: event.clientY };
+    if (event.pointerType === 'touch') {
+      touches.add(event.pointerId);
+      if (touches.size > 1) {
+        downAt = null;
+        return;
+      }
+    }
+    downAt = { x: event.clientX, y: event.clientY, time: event.timeStamp, id: event.pointerId };
+  });
+
+  domElement.addEventListener('pointercancel', (event) => {
+    touches.delete(event.pointerId);
+    downAt = null;
   });
 
   domElement.addEventListener('pointerup', (event) => {
-    if (!downAt || event.button !== 0) return;
+    touches.delete(event.pointerId);
+    if (!downAt || event.button !== 0 || downAt.id !== event.pointerId) return;
     // Under pointer lock clientX/Y don't change, so any press counts as a click.
     const moved = document.pointerLockElement ? 0 : Math.hypot(event.clientX - downAt.x, event.clientY - downAt.y);
+    const { time } = downAt;
     downAt = null;
-    if (moved > CLICK_TOLERANCE_PX) return;
+    // A finger tap must be short and nearly still, so look-drags never click what they end on.
+    if (event.pointerType === 'touch' ? !isTap(moved, event.timeStamp - time) : moved > CLICK_TOLERANCE_PX) return;
     const hit = hitAt(event);
     if (hit) targets.get(hit.object).onClick?.(hit.uv);
   });

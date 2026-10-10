@@ -16,7 +16,10 @@ import { createComputers } from './ui/computers.js';
 import { createInfoPanel } from './ui/info-panel.js';
 import { createOfficeTv } from './ui/office-tv.js';
 import { createReportsPanel } from './ui/reports-panel.js';
+import { createOrientationGate } from './ui/orientation-gate.js';
 import { createSkillsPanel } from './ui/skills-panel.js';
+import { isTouchDevice } from './ui/touch-device.js';
+import { createTouchControls } from './ui/touch-controls.js';
 import { collectColliders } from './world/collision.js';
 import { createInteractables } from './world/interactables.js';
 import { createInteraction } from './world/interaction.js';
@@ -189,10 +192,10 @@ const officeTv = createOfficeTv({ tv: office.tv });
 // Desk computers: open a URL on one, or share a window from the desktop onto its monitor.
 const computers = createComputers({ setScreen: (info, texture) => office.roleRooms[info.room].setScreenContent(info.seat, texture) });
 // In the player views, clicks aim from the crosshair (screen centre) once the mouse is captured, and are
-// ignored before that (the first click only captures the mouse).
+// ignored before that (the first click only captures the mouse). Touch has no pointer lock, so a tap aims at the finger.
 const screenCentre = new THREE.Vector2(0, 0);
 const interaction = createInteraction(camera, renderer.domElement, {
-  getPointer: () => (view.mode === 'overview' ? undefined : view.isLocked() ? screenCentre : null),
+  getPointer: () => (view.mode === 'overview' ? undefined : view.isLocked() ? screenCentre : isTouchDevice() ? undefined : null),
 });
 interaction.register(office.skillsBoard.surface, {
   onHover(uv) {
@@ -411,6 +414,16 @@ window.addEventListener('keydown', (e) => {
   interactHandlers[inReach.kind]?.(inReach);
 });
 
+// Touch devices: rotate-to-landscape gate plus joystick, look drag and buttons (no-ops on desktop).
+const orientationGate = createOrientationGate();
+const touchControls = createTouchControls({
+  canvas: renderer.domElement,
+  player,
+  view,
+  gate: orientationGate,
+  interact: () => inReach && interactHandlers[inReach.kind]?.(inReach),
+});
+
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -436,6 +449,7 @@ renderer.setAnimationLoop(() => {
   }
   prompt.hidden = !inReach;
   if (inReach) prompt.querySelector('span').textContent = inReach.label;
+  touchControls.update(inReach?.label);
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
 });
