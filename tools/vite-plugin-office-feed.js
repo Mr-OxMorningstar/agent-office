@@ -28,6 +28,7 @@ const MAX_EVENT_BYTES = 256 * 1024; // the hook trims large tool inputs/results,
 const MAX_PERMISSION_BYTES = 1_000_000; // carries the whole tool_input (e.g. a Write's content); over this, the terminal asks
 const MAX_SMALL_BYTES = 16 * 1024; // presence and decide
 const STALE_AFTER_MS = 30 * 60 * 1000; // sessions with no events for this long walk out
+const IDLE_SESSION_MS = Number(process.env.OFFICE_IDLE_SESSION_MS) || 10 * 60 * 1000; // an idle or finished session leaves sooner
 const DELEGATING_TOOLS = new Set(['Task', 'Agent']);
 const PERMISSION_WAIT_MS = 60_000; // keep below the hook's own timeout (set to 75 s in settings.json)
 const PRESENCE_TTL_MS = 45_000; // a page counts as watching if it reported visible this recently
@@ -366,7 +367,12 @@ export default function officeFeedPlugin() {
 
       const sweep = setInterval(() => {
         const cutoff = Date.now() - STALE_AFTER_MS;
+        const idleCutoff = Date.now() - IDLE_SESSION_MS;
         for (const a of [...agents.values()]) {
+          if (a.kind === 'session' && (a.state === 'idle' || a.state === 'done') && a.at < idleCutoff) {
+            remove(a.id);
+            continue;
+          }
           // A background agent can outlive the stale window while its session is still active.
           if (a.kind === 'subagent' && a.agentId && (agents.get(a.parentId)?.at ?? 0) >= cutoff) continue;
           if (a.at < cutoff) remove(a.id);
